@@ -13,14 +13,14 @@ class UsuarioSeeder extends Seeder
 public function run()
 {
     Usuario::create([
-        'nombreUsuario' => 'Marcos',
-        'apellidoPaterno' => 'Lopez',
-        'apellidoMaterno' => 'Aquino',
-        'email' => 'Marcos.aquino@example.com',
+        'nombreUsuario' => 'Kevin',
+        'apellidoPaterno' => 'Yam',
+        'apellidoMaterno' => 'Sanchez',
+        'email' => 'kevin.ys@example.com',
         'idDependencia' => 2,
         'rol' => 'SujetoObligado',
         'estado' => 1,
-        'password' => Hash::make('hola123'),
+        'password' => Hash::make('prueba123'),
     ]);
 }
 
