@@ -40,17 +40,17 @@ class SolicitudesSeeder extends Seeder
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ],
-            // Agrega 11 registros más variando ligeramente los valores
+           
         ];
 
         for ($i = 2; $i <= 12; $i++) {
             $registro = $data[0];
-            $registro['usuario_id'] = $i; // Cambiar ID de usuario
+            $registro['usuario_id'] = $i; 
             $registro['homoclave_formato'] = 'CEMER-AR-' . str_pad($i, 3, '0', STR_PAD_LEFT);
             $registro['fecha_presentacion'] = Carbon::now()->subDays($i)->toDateString();
             $registro['fecha_tentativa_presentacion'] = Carbon::now()->addDays($i)->toDateString();
             $registro['fecha_tentativa_publicacion'] = Carbon::now()->addDays($i + 5)->toDateString();
-            $registro['publicacion'] = $i % 2 === 0; // Alternar publicación entre 0 y 1
+            $registro['publicacion'] = $i % 2 === 0; 
             $data[] = $registro;
         }
 

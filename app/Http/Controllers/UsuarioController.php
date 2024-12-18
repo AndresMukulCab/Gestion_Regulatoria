@@ -36,4 +36,43 @@ class UsuarioController extends Controller
         ]);
     }     
 
+    public function register(Request $request)
+{
+    // Validar los datos de entrada
+    $request->validate([
+        'nombreUsuario' => 'required|string|max:255',
+        'apellidoPaterno' => 'required|string|max:255',
+        'apellidoMaterno' => 'required|string|max:255',
+        'email' => 'required|email|unique:usuarios,email',
+        'password' => 'required|min:6',
+        'idDependencia' => 'nullable|integer',
+        'rol' => 'required|in:Enlace,SujetoObligado,Ciudadano',
+    ]);
+
+    // Crear el nuevo usuario
+    $usuario = Usuario::create([
+        'nombreUsuario' => $request->nombreUsuario,
+        'apellidoPaterno' => $request->apellidoPaterno,
+        'apellidoMaterno' => $request->apellidoMaterno,
+        'email' => $request->email,
+        'password' => Hash::make($request->password), // Cifrar la contraseña
+        'idDependencia' => $request->idDependencia,
+        'rol' => $request->rol,
+        'estado' => true, // Estado activo por defecto
+    ]);
+
+    // Generar un token
+    $token = $usuario->createToken('authToken')->plainTextToken;
+
+    // Retornar la respuesta
+    return response()->json([
+        'message' => 'Usuario registrado exitosamente',
+        'token' => $token,
+        'usuario' => $usuario
+    ], 201);
+}
+
+
+
+
 }

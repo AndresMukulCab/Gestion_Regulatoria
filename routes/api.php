@@ -8,7 +8,10 @@ use App\Http\Controllers\SolicitudController;
 
 Route::post('/login', [UsuarioController::class, 'login']);
 
-Route::get('/solicitudes', [SolicitudController::class, 'index']);
-Route::post('/solicitudes', [SolicitudController::class, 'store']);
-Route::put('/solicitudes/{id}', [SolicitudController::class, 'update']);
-Route::delete('/solicitudes/{id}', [SolicitudController::class, 'destroy']);
+Route::post('/register', [UsuarioController::class, 'register']);
+
+
+
+//Cambio
+Route::apiResource('solicitudes', SolicitudController::class);
+

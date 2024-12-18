@@ -3,29 +3,29 @@
 namespace App\Models;
 
 use Illuminate\Foundation\Auth\User as Authenticatable; // Para autenticación
-use Illuminate\Notifications\Notifiable; // Para notificaciones
-use Laravel\Sanctum\HasApiTokens; // Para manejo de tokens de API
+use Illuminate\Notifications\Notifiable; 
+use Laravel\Sanctum\HasApiTokens;
 
 class Usuario extends Authenticatable
 {
     use HasApiTokens, Notifiable;
 
     /**
-     * Tabla asociada al modelo.
+     *
      *
      * @var string
      */
     protected $table = 'usuarios'; // Nombre de la tabla
 
     /**
-     * Clave primaria personalizada.
+     *
      *
      * @var string
      */
-    protected $primaryKey = 'idUsuario'; // Nombre de la clave primaria
+    protected $primaryKey = 'idUsuario'; 
 
     /**
-     * Atributos que se pueden asignar masivamente.
+     * 
      *
      * @var array
      */
@@ -41,21 +41,21 @@ class Usuario extends Authenticatable
     ];
 
     /**
-     * Atributos ocultos para serialización.
+     * 
      *
      * @var array
      */
     protected $hidden = [
-        'password',      // Oculta la contraseña
-        'remember_token', // Oculta el token de "recordarme"
+        'password',      // Se oculta la contra
+        'remember_token',
     ];
 
     /**
-     * Atributos que deben ser convertidos a tipos nativos.
+     * Atributo de publicacion
      *
      * @var array
      */
     protected $casts = [
-        'estado' => 'boolean', // Convierte el estado a booleano
+        'estado' => 'boolean',
     ];
 }

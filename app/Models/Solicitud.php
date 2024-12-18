@@ -36,7 +36,7 @@ class Solicitud extends Model
         'publicacion',
     ];
 
-    // Relación con el modelo Usuario
+   
     public function usuario()
     {
         return $this->belongsTo(Usuario::class, 'usuario_id');

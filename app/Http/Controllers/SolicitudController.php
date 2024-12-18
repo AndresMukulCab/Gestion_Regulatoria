@@ -7,15 +7,15 @@ use App\Models\Solicitud;
 
 class SolicitudController extends Controller
 {
+    // Mostrar todas las solicitudes
     public function index()
     {
-        // Retorna todas las solicitudes con información del usuario
         return Solicitud::with('usuario')->get();
     }
 
+    //Crear una nueva solicitud
     public function store(Request $request)
     {
-        // Valida los datos
         $validated = $request->validate([
             'usuario_id' => 'required|exists:usuarios,idUsuario',
             'homoclave_formato' => 'required|string',
@@ -41,69 +41,73 @@ class SolicitudController extends Controller
             'publicacion' => 'boolean',
         ]);
 
-        // Crea la solicitud
         $solicitud = Solicitud::create($validated);
 
         return response()->json(['message' => 'Solicitud creada con éxito', 'solicitud' => $solicitud], 201);
     }
 
-    //Update y delete
+    //Mostrar una solicitud específica
+    public function show($id)
+    {
+        $solicitud = Solicitud::with('usuario')->find($id);
+
+        if (!$solicitud) {
+            return response()->json(['message' => 'Solicitud no encontrada'], 404);
+        }
+
+        return response()->json($solicitud, 200);
+    }
+
+    //Actualizar una solicitud
     public function update(Request $request, $id)
-{
-    // Encuentra la solicitud por ID
-    $solicitud = Solicitud::find($id);
+    {
+        $solicitud = Solicitud::find($id);
 
-    // Verifica si existe la solicitud
-    if (!$solicitud) {
-        return response()->json(['message' => 'Solicitud no encontrada'], 404);
+        if (!$solicitud) {
+            return response()->json(['message' => 'Solicitud no encontrada'], 404);
+        }
+
+        $validated = $request->validate([
+            'usuario_id' => 'sometimes|exists:usuarios,idUsuario',
+            'homoclave_formato' => 'sometimes|string',
+            'nombre_responsable_oficial' => 'sometimes|string',
+            'cargo_responsable_oficial' => 'sometimes|string',
+            'fecha_presentacion' => 'sometimes|date',
+            'nombre_preeliminar' => 'sometimes|string',
+            'materia_regulacion' => 'sometimes|string',
+            'accion_regulatoria' => 'sometimes|string',
+            'nombre_responsable_propuesta' => 'sometimes|string',
+            'cargo_responsable_propuesta' => 'sometimes|string',
+            'descripcion_propuesta' => 'sometimes|string',
+            'problematica_propuesta' => 'sometimes|string',
+            'justificacion_propuesta' => 'sometimes|string',
+            'beneficio_propuesta' => 'sometimes|string',
+            'fundamento_juridico' => 'sometimes|string',
+            'fecha_tentativa_presentacion' => 'sometimes|date',
+            'fecha_tentativa_publicacion' => 'sometimes|date',
+            'nombre_responsable_elabora' => 'sometimes|string',
+            'cargo_responsable_elabora' => 'sometimes|string',
+            'nombre_titular' => 'sometimes|string',
+            'cargo_titular' => 'sometimes|string',
+            'publicacion' => 'sometimes|boolean',
+        ]);
+
+        $solicitud->update($validated);
+
+        return response()->json(['message' => 'Solicitud actualizada con éxito', 'solicitud' => $solicitud], 200);
     }
 
-    // Valida los datos enviados para la actualización
-    $validated = $request->validate([
-        'usuario_id' => 'sometimes|exists:usuarios,idUsuario',
-        'homoclave_formato' => 'sometimes|string',
-        'nombre_responsable_oficial' => 'sometimes|string',
-        'cargo_responsable_oficial' => 'sometimes|string',
-        'fecha_presentacion' => 'sometimes|date',
-        'nombre_preeliminar' => 'sometimes|string',
-        'materia_regulacion' => 'sometimes|string',
-        'accion_regulatoria' => 'sometimes|string',
-        'nombre_responsable_propuesta' => 'sometimes|string',
-        'cargo_responsable_propuesta' => 'sometimes|string',
-        'descripcion_propuesta' => 'sometimes|string',
-        'problematica_propuesta' => 'sometimes|string',
-        'justificacion_propuesta' => 'sometimes|string',
-        'beneficio_propuesta' => 'sometimes|string',
-        'fundamento_juridico' => 'sometimes|string',
-        'fecha_tentativa_presentacion' => 'sometimes|date',
-        'fecha_tentativa_publicacion' => 'sometimes|date',
-        'nombre_responsable_elabora' => 'sometimes|string',
-        'cargo_responsable_elabora' => 'sometimes|string',
-        'nombre_titular' => 'sometimes|string',
-        'cargo_titular' => 'sometimes|string',
-        'publicacion' => 'sometimes|boolean',
-    ]);
+    //Eliminar una solicitud
+    public function destroy($id)
+    {
+        $solicitud = Solicitud::find($id);
 
-    // Actualiza los campos de la solicitud
-    $solicitud->update($validated);
+        if (!$solicitud) {
+            return response()->json(['message' => 'Solicitud no encontrada'], 404);
+        }
 
-    return response()->json(['message' => 'Solicitud actualizada con éxito', 'solicitud' => $solicitud], 200);
-}
+        $solicitud->delete();
 
-public function destroy($id)
-{
-    // Encuentra la solicitud por ID
-    $solicitud = Solicitud::find($id);
-
-    // Verifica si existe la solicitud
-    if (!$solicitud) {
-        return response()->json(['message' => 'Solicitud no encontrada'], 404);
+        return response()->json(['message' => 'Solicitud eliminada con éxito'], 200);
     }
-
-    // Elimina la solicitud
-    $solicitud->delete();
-
-    return response()->json(['message' => 'Solicitud eliminada con éxito'], 200);
-}
-
 }
